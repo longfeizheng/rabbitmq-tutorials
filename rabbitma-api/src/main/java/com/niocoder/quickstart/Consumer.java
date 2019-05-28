@@ -1,9 +1,6 @@
 package com.niocoder.quickstart;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.QueueingConsumer;
+import com.rabbitmq.client.*;
 
 public class Consumer {
     public static void main(String[] args) throws Exception {
@@ -43,6 +40,9 @@ public class Consumer {
             QueueingConsumer.Delivery delivery = consumer.nextDelivery();
             String msg = new String(delivery.getBody());
             System.err.println("消费端: " + msg);
+
+//            Envelope envelope = delivery.getEnvelope();
+//            envelope.getDeliveryTag();  手动ack 需要回传这个tag
         }
     }
 }
