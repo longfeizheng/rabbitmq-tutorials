@@ -29,10 +29,10 @@ public class Procuder {
         for (int i = 0; i < 3; i++) {
             String msg = "Hello World";
             /**
-             *      * @param exchange the exchange to publish the message to
-             *      * @param routingKey the routing key
-             *      * @param props other properties for the message - routing headers etc
-             *      * @param body the message body
+             *      * @param exchange the exchange to publish the message to 交换机
+             *      * @param routingKey the routing key 路由key
+             *      * @param props other properties for the message - routing headers etc 消息的修饰
+             *      * @param body the message body 消息体
              */
             channel.basicPublish("", "hello", null, msg.getBytes());
         }
