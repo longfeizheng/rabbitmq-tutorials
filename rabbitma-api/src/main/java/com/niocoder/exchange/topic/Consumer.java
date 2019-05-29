@@ -1,4 +1,4 @@
-package com.niocoder.quickstart;
+package com.niocoder.exchange.topic;
 
 import com.niocoder.utils.ConnectionUtils;
 import com.rabbitmq.client.Channel;
@@ -11,8 +11,13 @@ public class Consumer {
         Connection connection = connectionUtils.getConnection();
         Channel channel = connectionUtils.getChannel();
 
-        // 4. 创建一个队列
-        String queueName = "hello";
+        // 4. 声明
+        String exchangeName = "test_topic_exchange";
+        String exchangeType = "topic";
+        String queueName = "test_topic_queue";
+        String routingKey = "user.*";
+
+        channel.exchangeDeclare(exchangeName, exchangeType, true, false, false, null);
         /**
          *      * @param queue the name of the queue 队列名字
          *      * @param durable true if we are declaring a durable queue (the queue will survive a server restart)  持久化
@@ -22,13 +27,14 @@ public class Consumer {
          */
         channel.queueDeclare(queueName, true, false, false, null);
 
+        channel.queueBind(queueName, exchangeName, routingKey);
         // 5. 创建消费者
         QueueingConsumer consumer = new QueueingConsumer(channel);
 
         // 6. 设置channel
-        channel.basicConsume(queueName,true,consumer);
+        channel.basicConsume(queueName, true, consumer);
 
-        while (true){
+        while (true) {
             // 7. 获取消息
             QueueingConsumer.Delivery delivery = consumer.nextDelivery();
             String msg = new String(delivery.getBody());
